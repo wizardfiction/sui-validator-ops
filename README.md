@@ -1,6 +1,6 @@
 # Sui Validator Operations Automation
 
-The purpose of this repo is to serve as a starting place for automating some of the tasks involved with operating a validator.
+The purpose of this repo is to serve as a starting place for automating some of the tasks involved with operating a validator. It relies on subscribing to Move events on-chain to get up to date information about the validator, and in turn uses that information to make decisions about reference gas price.
 
 ## Prerequisites
 
