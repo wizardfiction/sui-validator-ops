@@ -30,6 +30,8 @@ The program can be run either via the included Dockerfile, or directly with node
 
 When running locally, make sure to populate the environment variables in a `.env` file.
 
+The Repo uses `pnpm` NOT `npm` to manage dependencies. If you don't have `pnpm` installed, you can install it with `npm install -g pnpm`.
+
 ## Current shortcomings
 
 This is really just a starting point, and there are a lot of things that could be improved. Here are some of the things that I would like to add:
