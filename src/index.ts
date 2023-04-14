@@ -7,13 +7,12 @@ import {
   SIGNATURE_SCHEME_TO_FLAG,
   PRIVATE_KEY_SIZE,
 } from "@mysten/sui.js";
-import {
-  GAUCHO_ADDRESS,
-  validatorEpochInfo,
-  systemEpochInfo,
-} from "./tokenomics";
+import dotenv from "dotenv";
+import { updateGasPrice, calculateNewGasPrice } from "./tokenomics";
 
-import { subscribeValidatorEpochInfo } from "./subscriber";
+import { subscribeValidatorEpochInfo } from "./events";
+
+dotenv.config();
 
 const getProvider = (fullnode: string, faucet?: string): JsonRpcProvider => {
   const connection = new Connection({
@@ -40,26 +39,19 @@ const getSigner = (
 };
 
 async function main() {
-  // const provider = getProvider("https://rpc-testnet.suiscan.xyz:443/");
-  const provider = getProvider("https://rpc.mainnet.sui.io:443");
+  const provider = getProvider(process.env.RPC_URL!);
 
-  const gauchoInfo = await validatorEpochInfo(provider, GAUCHO_ADDRESS);
-  const validatorInfo = await validatorEpochInfo(provider);
-  const systemInfo = await systemEpochInfo(provider);
+  const signer = getSigner(process.env.OP_PRIVATE_KEY!, provider);
 
-  console.log(gauchoInfo);
-  console.log(systemInfo);
-
-  const handle1 = await subscribeValidatorEpochInfo(provider, (v) => {
-    console.log("VALIDATOR: ", v);
-    if (v.validator_address === GAUCHO_ADDRESS) {
-      console.log(v);
-      const validatorRewards =
-        (BigInt(v.pool_staking_reward) * BigInt(v.commission_rate)) /
-          BigInt(1000) +
-        BigInt(v.storage_fund_staking_reward);
-
-      console.log("VALIDATOR REWARDS: ", validatorRewards);
+  await subscribeValidatorEpochInfo(provider, async (v) => {
+    if (v.validator_address === process.env.VALIDATOR_ADDRESS) {
+      const newGasPrice = calculateNewGasPrice(v);
+      const result = await updateGasPrice(signer, newGasPrice);
+      console.log(
+        `Updated nextEpochGasPrice to ${newGasPrice}. Transaction result: ${result}`,
+        newGasPrice,
+        result
+      );
     }
   });
 

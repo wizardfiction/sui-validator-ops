@@ -2,6 +2,7 @@ export enum MoveEvent {
   ValidatorEpochInfo = "0x3::validator_set::ValidatorEpochInfoEventV2",
   SystemEpochInfo = "0x3::sui_system_state_inner::SystemEpochInfoEvent",
   RequestSetGasPrice = "0x3::sui_system::request_set_gas_price",
+  RequestWithdrawStake = "0x3::sui_system::request_withdraw_stake",
 }
 
 export interface ValidatorEpochInfo {
