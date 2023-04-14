@@ -46,12 +46,16 @@ async function main() {
   await subscribeValidatorEpochInfo(provider, async (v) => {
     if (v.validator_address === process.env.VALIDATOR_ADDRESS) {
       const newGasPrice = calculateNewGasPrice(v);
-      const result = await updateGasPrice(signer, newGasPrice);
-      console.log(
-        `Updated nextEpochGasPrice to ${newGasPrice}. Transaction result: ${result}`,
-        newGasPrice,
-        result
-      );
+      try {
+        const result = await updateGasPrice(signer, newGasPrice);
+        console.log(
+          `Updated nextEpochGasPrice to ${newGasPrice}. Transaction result: ${result}`,
+          newGasPrice,
+          result
+        );
+      } catch (err) {
+        console.error("Error updating gas price", err);
+      }
     }
   });
 
