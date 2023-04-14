@@ -14,11 +14,11 @@ The purpose of this repo is to serve as a starting place for automating some of 
 
 The application expects the following environment variables:
 
-- `VALIDATOR_ADDRESS`: The address of the validator you are running on behalf of (mainnet | testnet)
+- `VALIDATOR_ADDRESS`: The address of the validator you are running on behalf of.
 
-- `RPC_URL`: The RPC URL of the network you are operating on (mainnet | testnet)
+- `RPC_URL`: The RPC URL of the network you are operating on.
 
-- `OP_PRIVATE_KEY`: Private key of the operations keypair
+- `OP_PRIVATE_KEY`: Private key of the operations keypair.
 
 - `GAS_OP_CAP_OBJECT_ID`: The objectId of the operation cap object, owned by the operations keypair.
 
@@ -27,6 +27,8 @@ The application expects the following environment variables:
 ## Running
 
 The program can be run either via the included Dockerfile, or directly with node (look in package.json).
+
+When running locally, make sure to populate the environment variables in a `.env` file.
 
 ## Current shortcomings
 
